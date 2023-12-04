@@ -1,0 +1,11 @@
+dependencies:
+  Smartcfg:
+    override_path: '../../../'
+
+  Wifi:
+    override_path: '../../../../Wifi'
+
+  Sntp:
+    override_path: '../../../../Sntp'
+
+

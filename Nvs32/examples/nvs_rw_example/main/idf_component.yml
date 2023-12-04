@@ -1,0 +1,5 @@
+dependencies:
+  Nvs32:
+    override_path: '../../../'
+
+

@@ -1,0 +1,13 @@
+dependencies:
+  Smartcfg:
+    override_path: '../../../../Smartcfg'
+
+  Credentials:
+    override_path: '../../../../Credentials'
+
+  Wifi:
+    override_path: '../../../../Wifi'
+
+  Sntp:
+    override_path: '../../../../Sntp'
+

@@ -1,0 +1,48 @@
+# Sntp class
+To create sntp singleton object
+
+## Sntp Member Functions
+init(uint32_t sync_interval) - init sntp
+
+get_time_now(void) - get current time
+
+print_time(time_t t) - print time
+
+get_time_from_last_update(void) - get duration from last sntp update
+
+get_instance(void) - get sntp singleton instance
+
+
+# Wifi class
+To create singleton wifi object
+
+## Wifi Member Functions
+init(void) - init wifi
+
+begin(const char* SSID, const char* PASS) - configure and start wifi
+
+wifi_sta_connect(void) - connect esp32 as station
+
+wifi_ap_connect(const char * ssid, const char * pass, wifi_config_t* cfg) - connect esp32 as AP
+
+wifi_disconnect(void) - disconnect station
+
+wifi_stop(void) - stop wifi
+
+netif_destroy(esp_netif_t* netif_object) - destroy netif object
+
+state_e& get_state(void) - get wifi state
+
+get_mac(void) - get mac address string
+
+
+
+
+
+
+
+
+
+
+
+

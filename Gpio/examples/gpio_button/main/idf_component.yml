@@ -1,0 +1,3 @@
+dependencies:
+  Gpio:
+    override_path: '../../../'
