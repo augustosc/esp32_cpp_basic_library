@@ -15,8 +15,8 @@
 // #define TEST_0           ///< set()
 // #define TEST_1             ///< on()/off()
 // #define TEST_2           ///< toggle()
- #define TEST_3           ///< toggle() led_18
-// #define TEST_4           ///< blink()
+// #define TEST_3           ///< toggle() led_18
+ #define TEST_4           ///< blink()
 
 
 static Main my_main;

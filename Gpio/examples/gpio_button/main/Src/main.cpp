@@ -66,6 +66,8 @@ void Main::loop(void)
     if (butt_0.isChange())
     {
         led_2.set(butt_0.read_state());
+        int st=butt_0.read_state();
+        ESP_LOGW(LOG_TAG, "new button state = %d",st);
     }
     vTaskDelay(1);
 #endif

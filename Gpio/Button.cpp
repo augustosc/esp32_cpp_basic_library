@@ -17,8 +17,7 @@ namespace BUTTON {
         get();
         if (state() == old_state) {
             return false;
-        }
-        else{
+        } else {
             ESP_LOGI(_log_tag, "invert_logic = %d & previous = %d & current = %d!", _inverted_logic, previous_state,current_state);
             if (previous_state == 0 && current_state == 1){
                 ris_edge = _inverted_logic ? false : true;
@@ -28,7 +27,11 @@ namespace BUTTON {
                 ris_edge = _inverted_logic ? true : false;
                 fal_edge = _inverted_logic ? false : true;
             }
-            ESP_LOGI(_log_tag, "rise = %d & fall = %d",ris_edge, fal_edge);
+            if (ris_edge)
+                ESP_LOGI(_log_tag, "button 0->1");
+            if (fal_edge)
+            ESP_LOGI(_log_tag, "button 1->0");
+            
         return true;
 
         }

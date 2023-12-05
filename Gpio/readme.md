@@ -1,21 +1,68 @@
-# Gpio Class
-To create Led & Buttons object
+# CPP Gpio driver
+This folder contains an ESP-IDF driver for GPIO written in C++.
+
+To create and use Led & Buttons instances.
+
+The Button inteface includes debounce.
+
+## Interfaces
+There are two interfaces:
+- Led
+- Button
 
 ## Led Member Functions
-on() - turn led on
+. on() - turn led on
 
-off() - turn led off
+. off() - turn led off
 
-toggle() - toggle led
+. toggle() - toggle led
 
-blink() - blink led on interval
+. blink(interval) - blink led on interval
 
 ## Button Member Functions
-isChange() - is button state changed?
+. read_state() - button state
 
-isRisingEdge() - has button rising edge?
+. isChange() - is button state . changed?
 
-isFallingEdge() - has button falling edge?
+. isRisingEdge() - is button 
+rising edge?
+
+. isFallingEdge() - is button falling edge?
+
+
+## Using the component
+- Creating an instance in main.h inside class Main
+```bash
+LED::Led led_2 {GPIO_NUM_2, false};
+
+BUTTON::Button butt_0 {GPIO_NUM_0, Gpio::gpio_pull_e::UP,true};
+``````
+
+- Init the instance in main.cpp inside main::setup
+```bash
+esp_err_t err = led_2.init();
+esp_err_t err = butt_4.init();
+``````
+- Use Gpio member functions in your code
+```bash
+led_2.on();
+led_2.off();
+if (butt_0.isChange()){
+    ....
+}
+```
+
+## Example
+Download an example code from Gpio/examples folder in github.
+
+In local folder run:
+```bash
+idf.py build
+```
+The component will be automatically downloaded to the manage_components local folder.
+
+And the project is build.
+
 
 
 
