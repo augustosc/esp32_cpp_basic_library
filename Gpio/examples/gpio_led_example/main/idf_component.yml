@@ -1,3 +1,11 @@
+# LOCAL COMPONENT BUILDING
+# dependencies:
+  # Gpio:
+  #   override_path: '../../../'
+
+
+
+# BUILDING WITH COMPONENTS FROM GITHUB
 dependencies:
   idf:
     version: '>=5.0'
@@ -5,7 +13,6 @@ dependencies:
     git: https://github.com/augustosc/esp32_cpp_basic_library.git
 
     path: Gpio
-    # override_path: '../../../'
 
 description: CPP Gpio driver
 documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Gpio

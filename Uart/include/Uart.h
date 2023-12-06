@@ -71,8 +71,14 @@ namespace UART {
         /// @return number of read bytes
         int read(uint8_t* data, uint32_t len,uint32_t timeout = 1);
 
+        //***********************************************
+        /// @brief flush rx buffer
+        /// @return ESP_OK on success
         esp_err_t flush();
 
+        //***********************************************
+        /// @brief is uart data available to read
+        /// @return number of bytes available
         size_t available();
 
         void handle_uart_data();
