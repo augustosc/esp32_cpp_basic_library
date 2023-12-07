@@ -23,7 +23,7 @@ esp_err_t Main::setup(void)
 {
 
 /*************************************************
- *         Read file line by line
+ *         TEST: Read file line by line
 **************************************************/
     const char* fr_name{"/spiffs/sub/data.txt"};
     const int n_lines = 100;
@@ -38,19 +38,24 @@ void Main::loop(void)
    vTaskDelay(5);
 }
 
-
+/*************************************************
+ *         Read and print file line by line
+**************************************************/
 void Main::read_by_line(const char* f_name, int n_lines)
 {
-    esp_err_t status = ESP_OK;
-    const char* partition_label{"storage"};
+    
+    const char* PARTITION_TABLE{"storage"};
     const size_t MAX_LINE_SIZE = 256;
+
+    esp_err_t status = ESP_OK;
     int err =0;
     FILE* f = NULL;
 
+    // create buffer to receive read line
     char* line = (char*)malloc(MAX_LINE_SIZE);
 
     // mount spiff
-    status = spf.mount(partition_label,"/spiffs",10,"true");
+    status = spf.mount(PARTITION_TABLE,"/spiffs",10,"true");
 
     if (ESP_OK == status)
     {

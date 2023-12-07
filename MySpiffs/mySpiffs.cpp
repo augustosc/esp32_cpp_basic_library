@@ -30,19 +30,6 @@ namespace SPIFFS {
     }
 
 
-//***********************************************
-
-    FILE* Spiffs::open_file(const char* f_name,
-                    const char* mode)
-    {
-        FILE* f = fopen(f_name, mode);
-        if (f == NULL) {
-        ESP_LOGE(_log_tag,"FILE OPEN ERROR");
-        }
-        return f;
-    }
-
-
     //***********************************************
 
     unsigned int Spiffs::write_new_file(const char* f_name,
@@ -112,7 +99,10 @@ namespace SPIFFS {
         total_read = fread(buf,1,f_size,f);
         }
 
+        buf[f_size] = '\0';
+
         ESP_LOGI(_log_tag,"read bytes = %u",total_read);
+
 
         fclose(f);
 

@@ -8,9 +8,13 @@
 #include "nvs_flash.h"
 
 
+
 // class includes
 #include "Wifi.h"
 #include "SntpTime.h"
+#include "Credentials.h"
+#include "Smartcfg.h"
+//#include "Nvs32.h"
 
 #define LOG_LEVEL_LOCAL ESP_LOG_INFO
 
@@ -24,17 +28,32 @@ constexpr uint32_t one_minute{60*1000};
 class Main final
 {
 public:
+    Main(void)
+        
+    {
+    }
+
     esp_err_t setup(void);
     void loop(void);
 
-/*************************************************
- * create objects here as class Main members.
-**************************************************/
-    WIFI::Wifi wifi;
-    
+    esp_err_t check_credentials(void);
+
+
+    /// create objects here as class Main members
+    /// use them inside Main::setup and/or Main::loop
+
+     WIFI::Wifi wifi;
+
+     SMARTCFG::Smartcfg smartconfig;
+
     //singleton instance
     SNTP::Sntp& sntp { SNTP::Sntp::get_instance() };
 
-    
+    // singleton instance
+    CREDENTIALS::Credentials& nvs_credentials { CREDENTIALS::Credentials::get_instance() };
+
+    // singleton instance
+    //NVS::Nvs& nvs {NVS::Nvs::get_instance()};
+
 
 };

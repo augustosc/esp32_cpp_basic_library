@@ -27,12 +27,19 @@ esp_err_t Main::setup(void)
     esp_err_t status {ESP_OK};
 
     ESP_LOGI(LOG_TAG, "Setup!");
+
+    /**********************************************
+     * TEST: Connect ESP32 as station to your AP
+    ***********************************************/
     
+    // init wifi
     status = wifi.init();
 
+    // connect as Station
     if(ESP_OK == status)
         {status = wifi.wifi_sta_connect();}
 
+    // wifi begin
     if(ESP_OK == status)
         {status = wifi.begin("Casa","pIMa7602944");}
     

@@ -55,11 +55,17 @@ if (butt_0.isChange()){
 ## Example
 Download an example code from Gpio/examples folder in github.
 
+
+If you choose the option BUILDING WITH COMPONENTS FROM GITHUB in idf_component.yml file inside main, the component will be automatically downloaded from github to the manage_components local folder.
+
+If you prefer dependencies locally, first download all MySpiffs component from github, so choose the # LOCAL COMPONENT BUILDING  in idf_component.yml file inside main. 
+
+So compile.
+
 In local folder run:
 ```bash
 idf.py build
 ```
-The component will be automatically downloaded to the manage_components local folder.
 
 And the project is build.
 

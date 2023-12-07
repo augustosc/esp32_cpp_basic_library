@@ -42,21 +42,6 @@ namespace SPIFFS
 
         //***********************************************
         /// @param f_name file name
-        /// @param mode mode ("w","r" ...)
-        /// @return pointer to file stream
-        FILE* open_file(const char* f_name,
-                            const char* mode);
-
-        
-        //***********************************************
-        /// @param f pointer to file stream
-        /// @return ESP_OK on success
-        esp_err_t close_file(FILE* f){
-            return fclose(f);
-        }
-
-        //***********************************************
-        /// @param f_name file name
         /// @return file size
         unsigned int get_file_size(const char* f_name);
         
@@ -70,11 +55,6 @@ namespace SPIFFS
                             const char* content,unsigned int f_size);
 
 
-
-        esp_err_t writeln(FILE* f, char * line);
-
-
-        
         //***********************************************  
         /// @param f_name file name
         /// @param buf buffer to save read bytes
@@ -82,10 +62,18 @@ namespace SPIFFS
         /// @return bytes read
         unsigned int read_file(const char* f_name, char* buf, unsigned int size_buf);
 
+
+        ///*********************************************** 
+        /// @brief writeln to a file stream
+        /// @param f pointer to file stream
+        /// @param line line to be written
+        /// @return bytes written
+        esp_err_t writeln(FILE* f, char * line);
+
         //***********************************************  
         /// @param f pointer to file stream
-        /// @param line buffer to save read line
         /// @param max_line_size max line size
+        /// @param line buffer to save read line
         /// @param err returns errno
         /// @return ESP_OK on success
         esp_err_t readln(FILE* f,size_t max_line_size,char* line,int err);
