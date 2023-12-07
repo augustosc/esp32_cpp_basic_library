@@ -16,11 +16,15 @@ SMARTCFG::Smartcfg smartconfig;
 WIFI::Wifi wifi;
 ``````
 
-
 - Init wifi instance in main.cpp inside main::setup
 ```bash
 status = wifi.init();
 status = wifi.wifi_sta_connect();
+``````
+
+- Get credentials from smartconfig
+```bash
+status = smartconfig.init();
 ``````
 
 - Init the instance in main.cpp inside main::setup
@@ -28,7 +32,7 @@ status = wifi.wifi_sta_connect();
 sntp.init(3*one_minute);
 ```
 
-- After Smartconfig get credentials from ESPTOCH APP, set wifi credentials:
+- After Smartconfig get credentials from ESPTOUCH APP, set wifi credentials:
 ```bash
 SMARTCFG::Credentials credential{0};
 

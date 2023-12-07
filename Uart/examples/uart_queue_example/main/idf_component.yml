@@ -8,7 +8,6 @@
 dependencies:
   idf:
     version: '>=5.0'
-
   Uart:
     git: https://github.com/augustosc/esp32_cpp_basic_library.git
     path: Uart

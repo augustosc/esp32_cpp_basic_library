@@ -1,7 +1,5 @@
 # LOCAL COMPONENT BUILDING
 # dependencies:
-  # Gpio:
-  #   override_path: '../../../../Gpio'
   # Uart:
   #   override_path: '../../../'
 
@@ -10,10 +8,6 @@
 dependencies:
   idf:
     version: '>=5.0'
-  Gpio:
-    git: https://github.com/augustosc/esp32_cpp_basic_library.git
-    path: Gpio
-
   Uart:
     git: https://github.com/augustosc/esp32_cpp_basic_library.git
     path: Uart

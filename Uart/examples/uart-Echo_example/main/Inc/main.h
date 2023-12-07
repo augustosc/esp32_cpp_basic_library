@@ -9,9 +9,7 @@
 
 
 
-// gpio class includes
-#include "Gpio.h"
-#include "Led.h"
+// class includes
 #include "Uart.h"
 
 #define LOG_LEVEL_LOCAL ESP_LOG_INFO
@@ -39,8 +37,6 @@ public:
 
     /// create objects here as class Main members
     /// use them inside Main::setup and/or Main::loop
-
-     LED::Led led_2 {GPIO_NUM_2, false};
 
     UART::Uart U0{0};
 

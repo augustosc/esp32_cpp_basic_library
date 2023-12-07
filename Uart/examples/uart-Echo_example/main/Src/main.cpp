@@ -31,8 +31,6 @@ esp_err_t Main::setup(void)
     esp_err_t status {ESP_OK};
 
     ESP_LOGI(LOG_TAG, "Setup!");
-    
-    status = led_2.init();
 
     vTaskDelay(500/portTICK_PERIOD_MS);
 
