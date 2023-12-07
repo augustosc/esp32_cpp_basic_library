@@ -1,9 +1,10 @@
 #pragma once
 
-#include "esp_err.h"
-#include "esp_log.h"
 #include <stdio.h>
 #include <sys/stat.h>
+#include "esp_err.h"
+#include "esp_log.h"
+
 
 
 extern "C" {
@@ -67,6 +68,12 @@ namespace SPIFFS
         /// @return bytes written
         unsigned int write_new_file(const char* f_name,
                             const char* content,unsigned int f_size);
+
+
+
+        esp_err_t writeln(FILE* f, char * line);
+
+
         
         //***********************************************  
         /// @param f_name file name
@@ -74,6 +81,14 @@ namespace SPIFFS
         /// @param size_buf buffer size
         /// @return bytes read
         unsigned int read_file(const char* f_name, char* buf, unsigned int size_buf);
+
+        //***********************************************  
+        /// @param f pointer to file stream
+        /// @param line buffer to save read line
+        /// @param max_line_size max line size
+        /// @param err returns errno
+        /// @return ESP_OK on success
+        esp_err_t readln(FILE* f,size_t max_line_size,char* line,int err);
 
 
         //***********************************************  

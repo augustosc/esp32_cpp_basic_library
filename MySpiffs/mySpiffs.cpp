@@ -1,6 +1,7 @@
 #include "mySpiffs.h"
 
 #include <string.h>
+#include <errno.h>
 
 #include "esp_spiffs.h"
 #include "freertos/FreeRTOS.h"
@@ -62,7 +63,6 @@ namespace SPIFFS {
     }
 
 
-
     //***********************************************
 
     unsigned int Spiffs::read_file(const char* f_name, char* buf, unsigned int size_buf)
@@ -117,6 +117,41 @@ namespace SPIFFS {
         fclose(f);
 
         return total_read;
+
+    }
+
+
+    //***********************************************
+
+    esp_err_t Spiffs::writeln(FILE* f, char * line)
+    {
+        errno=0;
+
+        clearerr(f);
+
+        int result = fputs(line,f);
+
+        if(result<0) ESP_LOGE(_log_tag, "Error writing file %s", strerror(errno));
+
+        return (result>0)? ESP_OK : ESP_FAIL;
+    }
+
+
+    //***********************************************
+    
+    esp_err_t Spiffs::readln(FILE* f,size_t max_line_size,char* line, int err)
+    {
+        errno=0;
+
+        clearerr(f);
+
+        line = fgets(line,max_line_size,f);
+
+        err = errno;
+
+        if(err) ESP_LOGE(_log_tag, "Error reading file : %s", strerror(errno));
+
+        return ((line != NULL))? ESP_OK : ESP_FAIL;
 
     }
 

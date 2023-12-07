@@ -7,9 +7,9 @@
 
 //#define TEST_1            ///< Running spiffs_check
                             ///<Disable Watch CPU0 Idle Task in MENUCONFIG
-#define TEST_2            ///< Running wite & read spiffs file
+//#define TEST_2            ///< Running wite & read spiffs file
 //#define TEST_3            ///< Try to read file longer than the buffer
-//#define TEST_4            ///< Try to read & log a 12k file in chunks
+#define TEST_4            ///< Try to read & log a 12k file in chunks
 //#define TEST_5            ///< Get Spiffs info (total & used)
 
 static Main my_main;
