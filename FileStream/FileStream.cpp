@@ -1,6 +1,9 @@
 #include <stdio.h>
-#include <sys/stat.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <sys/unistd.h>
+#include <sys/dirent.h>
 #include <errno.h>
 #include "esp_err.h"
 #include "esp_log.h"
@@ -138,6 +141,180 @@ namespace FILESTREAM
             ESP_LOGE(_log_tag,"FILE SIZE ERROR");
 
         return entryStat.st_size;
+
+    }
+
+
+
+    //***********************************************
+
+    esp_err_t FileStream::look_up_file(const char* dirname,const char* filename, char* buf)
+    {
+#ifdef DEBUG
+        ESP_LOGI(_log_tag,"calling look_up_file: %s",dirname);
+#endif
+        
+
+        errno = 0;
+        DIR* dir = NULL;
+        struct dirent *entry;
+        esp_err_t ret = ESP_FAIL;
+
+        char* dir_name = (char*)calloc(300,1); ///< prevent stack overflow
+
+        if(dir_name == NULL)
+        {
+            ESP_LOGE(_log_tag, "Error allocating dir_name buffer");
+            goto finish_1;
+        }
+
+        if((dir = opendir(dirname)) == NULL)
+        {
+            ESP_LOGE(_log_tag, "Error openning dir \"%s\": \"%s\"",dirname,strerror(errno));
+            goto finish;
+        }
+
+        while ((entry = readdir(dir))!= NULL)
+        {
+            if (entry->d_type == DT_REG)
+            {
+#ifdef DEBUG
+                ESP_LOGI(_log_tag,"filename: %s; d->name:  %s",filename,entry->d_name);
+#endif
+                /*********************************************************************
+                 * FAT32 is a case-insensitive file system.
+                 * We need to compare with strcasecmp().
+                 * 
+                 * Section 6.1 of the official Microsoft spec:
+                 * "Short file names passed to the file system are "always" converted 
+                 * to "upper case" and their original case value is lost."
+                 * 
+                 * raddir() normally returns d->name in upper case. 
+                 * But sometimes in lower case??????
+                **********************************************************************/
+                if ((strcasecmp(entry->d_name,filename))== 0)
+                {
+#ifdef DEBUG
+                    ESP_LOGI(_log_tag,"file match");
+#endif
+                    sprintf(buf,"%s/%s",dirname, filename);
+                    ret = ESP_OK;
+                    break;
+                }
+            }
+            else if (entry->d_type == DT_DIR)
+            {
+                sprintf(dir_name,"%s/%s",dirname,entry->d_name);
+                ret = look_up_file(dir_name,filename,buf);
+                if (ESP_OK == ret) 
+                {
+                    break;
+                }
+                
+            }
+            
+        }
+
+        if(entry == NULL && errno != 0)
+        {
+            ESP_LOGE(_log_tag, "Error reading \"%s\": \"%s\"",dirname,strerror(errno));
+        }
+
+        if (closedir(dir) == -1)
+        {
+            ESP_LOGE(_log_tag, "Error closing \"%s\": \"%s\"",dirname,strerror(errno));
+        }
+
+    finish:
+        free(dir_name);
+
+    finish_1:
+#ifdef DEBUG
+        ESP_LOGI(_log_tag,"returning look_up_file: %s ret = %d",dirname,ret);
+#endif
+
+        return ret;
+}
+
+
+    //***********************************************
+
+    void FileStream::list_all_entries (const char* dirname)
+    {
+        ESP_LOGI(_log_tag,"calling list_all_entries: %s",dirname);
+
+    errno = 0;
+    DIR* dir;
+    struct dirent *entry;
+    //esp_err_t ret = ESP_FAIL;
+
+    char* dir_name = (char*)calloc(300,1); ///< prevent stack overflow
+
+    if(dir_name == NULL)
+    {
+         ESP_LOGE(_log_tag, "Error allocating dir_name buffer");
+         return;
+    }
+
+    if((dir = opendir(dirname)) == NULL)
+    {
+        ESP_LOGE(_log_tag, "Error openning dir \"%s\": \"%s\"",dirname,strerror(errno));
+        goto finish_1;
+    }
+
+    ESP_LOGI(_log_tag,"dirname : %s",dirname);
+
+    while ((entry = readdir(dir))!= NULL)
+    {
+        if (entry->d_type == DT_REG)
+        {
+            ESP_LOGI(_log_tag,"filename: %s/%s",dirname,entry->d_name);
+        }
+        else if (entry->d_type == DT_DIR)
+        {
+            continue;
+        }
+        
+    }
+
+    if(entry == NULL && errno != 0)
+    {
+        ESP_LOGE(_log_tag, "Error reading \"%s\": \"%s\"",dirname,strerror(errno));
+        goto finish;
+    }
+
+
+    rewinddir(dir);
+
+    while ((entry = readdir(dir))!= NULL)
+    {
+        if (entry->d_type == DT_REG)
+        {
+            continue;
+        }
+        else if (entry->d_type == DT_DIR)
+        {
+            sprintf(dir_name,"%s/%s",dirname,entry->d_name);
+            list_all_entries(dir_name);
+            
+        }
+        
+    }
+
+    if(entry == NULL && errno != 0)
+    {
+        ESP_LOGE(_log_tag, "Error reading \"%s\": \"%s\"",dirname,strerror(errno));
+    }
+
+finish:
+
+    if (closedir(dir) == -1)
+    {
+        ESP_LOGE(_log_tag, "Error closing \"%s\": \"%s\"",dirname,strerror(errno));
+    }
+
+finish_1:
+    free(dir_name);
 
     }
 

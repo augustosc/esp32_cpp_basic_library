@@ -1,14 +1,8 @@
-# CPP Spiffs driver
-This folder contains an ESP-IDF driver for Spiffs written in C++.
+# CPP FatFS driver
+This folder contains an ESP-IDF driver for FatFS written in C++.
 
-## Member Functions from Spiffs
-- mount(p_label, path, max_files,format) - register spiffs
-
-- spiffs_check(p_label) - check spifss consistency 
-
-- get_spiffs_info(void) - get total and use bytes
-
-- unmount(void) - unregister spiffs
+## Member Functions from MyFatfs
+- init(base_path, partition_label, mount_config) - init FatFs
 
 ## Member Functions inherited from FileStream
 - get_file_size(f_name) - get file size
@@ -26,31 +20,28 @@ This folder contains an ESP-IDF driver for Spiffs written in C++.
 - look_up_file(dirname, filename, buf) - lookup file in dir
 
 
+
 ## Using the component
 - Creating an instance in main.h inside class Main
 ```bash
-SPIFFS::Spiffs spf;
+MYFATFS::Fatfs mydisk;
 ``````
 
-- Mount Spiffs in main.cpp inside main::setup
+- Init Fatfs in main.cpp inside main::setup
 ```bash
-esp_err_t status = spf.mount(PARTITION_TABLE,PATH,MAX_FILES,"true");
+ esp_err_t err = mydisk.init(BASE_PATH,PARTITION_LABEL,NULL);
 
 ``````
-- Use Spiffs member functions in your code
+- Use Fatfs member functions in your code
 ```bash
-readln(FILE* f, max_line_size,cline,err);
-
-write_new_file(f_name, content,f_size);
+mydisk.look_up_file(BASE_PATH,lookup_file,buf);
+mydisk.readln(FILE* f, max_line_size,cline,err);
+mydisk.write_new_file(f_name, content,f_size);
 ```
 
-- So, unmount Spiffs in main.cpp
-```bash
-esp_err_t status = spf.unmount();
-```
 
 ## Example
-Download an example code from MySpiffs/examples folder in github.
+Download an example code from MyFatfs/examples folder in github.
 
 
 If you choose the option BUILDING WITH COMPONENTS FROM GITHUB in idf_component.yml file inside main, the component will be automatically downloaded from github to the manage_components local folder.

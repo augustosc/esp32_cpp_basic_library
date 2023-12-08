@@ -48,6 +48,10 @@ public:
     /// @return ESP_OK on success
     esp_err_t readln(FILE* f,size_t max_line_size,char* line,int err);
 
+    esp_err_t look_up_file(const char* dirname,const char* filename, char* buf);
+    
+    void list_all_entries (const char* dirname);
+
 
 
 };
