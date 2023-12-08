@@ -2,15 +2,17 @@
 This folder contains an ESP-IDF driver for Sntp written in C++.
 
 ## Member Functions
+- get_instance(void) - get sntp singleton instance
+
 - init(sync_interval) - init sntp
 
 - get_time_now(void) - get current time
 
 - print_time(t) - print time
 
-- get_time_from_last_update(void) - get duration from last sntp update
+- get_time_from_last_update(void)- get duration from last sntp update
 
-- get_instance(void) - get sntp singleton instance
+- print_time_from_last_update(void) - print duration from last sntp update
 
 
 ## Using the component

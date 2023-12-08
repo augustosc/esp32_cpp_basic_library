@@ -46,6 +46,10 @@ namespace SMARTCFG
         /// @return ESP_OK on success
         [[nodiscard]] esp_err_t init();
 
+
+        //***********************************************
+        /// @brief get smartconfig credentials
+        /// @return smartconfig credentials
         Credentials& get_credentials(void)
         {
             return my_credentials;

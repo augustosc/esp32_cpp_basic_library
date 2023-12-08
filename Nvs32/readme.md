@@ -3,9 +3,11 @@ This folder contains an ESP-IDF driver for Nvs written in C++.
 
 
 ## Member Functions
-- init(nvs_namespace) - init nvs
-
 - get_instance(void) - get nvs singleton instance
+
+- init(nvs_namespace) - init nvs namespace
+
+- close(void) - close namespace on nvs
 
 - write( key, const T* input, n_itens) - write blob on nvs
 

@@ -154,9 +154,10 @@ public:
     /// @param netif_object object
     void netif_destroy(esp_netif_t* netif_object);
 
+    //***********************************************
+    /// @brief deinit wifi
+    esp_err_t wifi_deinit(void);
 
-    esp_err_t wifi_deinit();
-    esp_err_t netif_deinit();
 
     //***********************************************
     /// @brief get wifi state

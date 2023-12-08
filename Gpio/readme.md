@@ -11,18 +11,18 @@ There are two interfaces:
 - Button
 
 ## Led Member Functions
-. on() - turn led on
+. on(void) - turn led on
 
-. off() - turn led off
+. off(void) - turn led off
 
-. toggle() - toggle led
+. toggle(void) - toggle led
 
 . blink(interval) - blink led on interval
 
 ## Button Member Functions
 . read_state() - button state
 
-. isChange() - is button state . changed?
+. isChange() - is button state  changed?
 
 . isRisingEdge() - is button 
 rising edge?

@@ -12,10 +12,12 @@ There are two interfaces:
 ## Member Functions all Uart
 - begin(baud, tx_pin, rx_pin, rx_buf_size, tx_buf_size) - configure UART
 
-- int write(data, len) - write data to UART tx buffer
+- write(data, len) - write data to UART tx buffer
 
-- int read(data, len, timeout) - read data from UART rx buffer
+- read(data, len, timeout) - read data from UART rx buffer
+
 - flush(void); - flush rx buffer
+
 - size_t available(void) - is uart data available to read
 
 ## Member Functions only event Uart
