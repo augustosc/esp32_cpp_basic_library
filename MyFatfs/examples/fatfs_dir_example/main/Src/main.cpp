@@ -4,9 +4,9 @@
 
 #define LOG_TAG "MAIN"
 
- #define TEST_1         ///< list_all_entries()
+// #define TEST_1         ///< list_all_entries()
 // #define TEST_2         ///< look_up_file() file found
-// #define TEST_3         ///< look_up_file() file not found
+ #define TEST_3         ///< look_up_file() file not found
 
 
 
@@ -32,16 +32,25 @@ esp_err_t Main::setup(void)
     static const char *BASE_PATH = "/myfatfs";
     static const char *PARTITION_LABEL = "storage";
     
-
     ESP_LOGI(LOG_TAG, "Setup!");
 
-    mydisk.init(BASE_PATH,PARTITION_LABEL,NULL);
 
 #ifdef TEST_1
+    // mount fatfs
+    mydisk.mount(BASE_PATH,PARTITION_LABEL,NULL);
+
+    // process files
     mydisk.list_all_entries(BASE_PATH);
+
+    // unmount fatfs
+    mydisk.unmount();
 #endif
 
 #ifdef TEST_2
+    // mount fatfs
+    mydisk.mount(BASE_PATH,PARTITION_LABEL,NULL);
+
+    // process files
     const char* lookup_file = "file11.txt";
     char buf[100] = {0};
 
@@ -51,9 +60,16 @@ esp_err_t Main::setup(void)
     else {
         ESP_LOGE(LOG_TAG,"file \"%s\" not found",lookup_file);
     }
+
+    // unmount fatfs
+    mydisk.unmount();
 #endif
 
 #ifdef TEST_3
+    // mount fatfs
+    mydisk.mount(BASE_PATH,PARTITION_LABEL,NULL);
+
+    // process files
     const char* lookup_file = "file11.txt";
     char buf[100] = {0};
 
@@ -66,6 +82,9 @@ esp_err_t Main::setup(void)
     else {
         ESP_LOGE(LOG_TAG,"file \"%s\" not found",lookup_file);
     }
+
+    // unmount fatfs
+    mydisk.unmount();
 #endif
 
 

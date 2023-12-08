@@ -22,7 +22,9 @@ This folder contains an ESP-IDF driver for FatFS written in C++.
 
 
 ## Using the component
-- Creating an instance in main.h inside class Main
+- Before build, Set "long filename in heap" in menuconfig (Fat File System Support)
+
+- Create an instance in main.h inside class Main
 ```bash
 MYFATFS::Fatfs mydisk;
 ``````

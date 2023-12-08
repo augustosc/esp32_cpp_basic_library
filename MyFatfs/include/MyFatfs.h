@@ -9,14 +9,24 @@
 
 namespace MYFATFS
 {
+    /**************************************
+     * IMPORTANT:
+     * Before build:
+     * Set "long filename in heap" in 
+     * menuconfig Fat File System Support
+    ***************************************/
     class Fatfs : public FILESTREAM::FileStream
     {
 private:
     const char* _log_tag {"MyFatfs"};
     wl_handle_t wl_handle;
     esp_vfs_fat_mount_config_t _mount_config;
+    char _base_path[16]{0};
 public:
-    esp_err_t init(const char* base_path, const char* partition_label, esp_vfs_fat_mount_config_t* mount_config = NULL);
+    esp_err_t mount(const char* base_path, const char* partition_label, esp_vfs_fat_mount_config_t* mount_config = NULL);
+
+    esp_err_t unmount();
+    
 
     };
 

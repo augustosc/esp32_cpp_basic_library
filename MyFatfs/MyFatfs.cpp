@@ -13,8 +13,10 @@
 
 namespace MYFATFS
 {
-    esp_err_t Fatfs::init(const char* base_path, const char* partition_label, esp_vfs_fat_mount_config_t* mount_config)
+    esp_err_t Fatfs::mount(const char* base_path, const char* partition_label, esp_vfs_fat_mount_config_t* mount_config)
     {
+        strncpy(_base_path, base_path, sizeof(_base_path));
+
         if(mount_config == NULL)
         {
             _mount_config = {
@@ -31,6 +33,11 @@ namespace MYFATFS
 
         return status;
 
+    }
+
+    esp_err_t Fatfs::unmount()
+    {
+        return esp_vfs_fat_spiflash_unmount_rw_wl(_base_path, wl_handle);
     }
 
 
