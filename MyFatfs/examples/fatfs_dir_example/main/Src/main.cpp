@@ -4,9 +4,9 @@
 
 #define LOG_TAG "MAIN"
 
-// #define TEST_1         ///< list_all_entries()
+ #define TEST_1         ///< list_all_entries()
 // #define TEST_2         ///< look_up_file() file found
- #define TEST_3         ///< look_up_file() file not found
+// #define TEST_3         ///< look_up_file() file not found
 
 
 
