@@ -47,6 +47,7 @@ time_t get_time_from_last_update(void);
 ## Example
 Download an example code from Sntp/examples folder in github.
 
+Set SSID and PASSWORD in menuconfig on "Example Configuration"
 
 If you choose the option BUILDING WITH COMPONENTS FROM GITHUB in idf_component.yml file inside main, the component will be automatically downloaded from github to the manage_components local folder.
 

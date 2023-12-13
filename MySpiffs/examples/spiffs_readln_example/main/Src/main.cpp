@@ -25,9 +25,34 @@ esp_err_t Main::setup(void)
 /*************************************************
  *         TEST: Read file line by line
 **************************************************/
-    const char* fr_name{"/spiffs/sub/data.txt"};
+    #define BASE_PATH "/spiffs"
+    const char* PARTITION_LABEL{"storage"};
+    const int MAX_FILES = 10;
+    const char* fr_name{BASE_PATH"/sub/data.txt"};
     const int n_lines = 100;
-    read_by_line(fr_name,n_lines);
+
+    esp_err_t status = ESP_OK;
+
+    
+    ESP_LOGW(LOG_TAG,"Reading %d lines of %s",n_lines,fr_name);
+
+    // mount spiff
+    status = spf.mount(PARTITION_LABEL,BASE_PATH,MAX_FILES,"true");
+
+    if (ESP_OK != status)
+    {
+        ESP_LOGE(LOG_TAG,"Error mounting spiffs  %s",PARTITION_LABEL);
+        return ESP_OK;
+    }
+
+    ESP_LOGI(LOG_TAG, "Spiff Mounted!");
+        
+    spf.readnln(fr_name,n_lines);
+
+    spf.unmount();
+
+    ESP_LOGI(LOG_TAG, "Spiff Unmount!");
+
     
     return ESP_OK;
 }
@@ -38,61 +63,3 @@ void Main::loop(void)
    vTaskDelay(5);
 }
 
-/*************************************************
- *         Read and print file line by line
-**************************************************/
-void Main::read_by_line(const char* f_name, int n_lines)
-{
-    
-    const char* PARTITION_TABLE{"storage"};
-    const size_t MAX_LINE_SIZE = 256;
-
-    esp_err_t status = ESP_OK;
-    int err =0;
-    FILE* f = NULL;
-
-    // create buffer to receive read line
-    char* line = (char*)malloc(MAX_LINE_SIZE);
-
-    // mount spiff
-    status = spf.mount(PARTITION_TABLE,"/spiffs",10,"true");
-
-    if (ESP_OK == status)
-    {
-        ESP_LOGI(LOG_TAG, "Spiff Mounted!");
-
-        // open file
-        f = fopen(f_name,"r");
-        if (f == NULL)
-        {
-            ESP_LOGE(LOG_TAG,"Error opening file %s",f_name);
-            goto l_unmount;
-        }
-        // read lines
-        for(int i=0;i<n_lines;i++)
-        {
-            status = spf.readln(f,MAX_LINE_SIZE,line,err);
-
-            if(err)
-            {
-                ESP_LOGE(LOG_TAG,"Error reading line %d",i+1);
-                break;
-            }
-
-            if(ESP_OK==status)
-            {
-                printf("[%d] %s",i+1,line);
-            } else {
-                break;
-            }
-        }
-    }
-    
-    fclose(f);
-
-l_unmount:
-    free(line);
-    spf.unmount();
-
-    ESP_LOGI(LOG_TAG, "Spiff Unmount!");
-}

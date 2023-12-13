@@ -17,6 +17,7 @@ This folder contains an ESP-IDF handler for FileStream written in C++.
 
 - look_up_file(dirname, filename, buf) - lookup file in dir
 
+- void print_file (f_name, n_lines) - print "n" lines of a file
 
 
 ## Using the component

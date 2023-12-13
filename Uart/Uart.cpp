@@ -217,4 +217,122 @@ void Uart::taskfun(void* parm)
         vTaskDelete(NULL);
   }
 
+  //****************************************
+    char** Uart::console(char* prompt)
+    {
+        char* line = NULL;
+        int line_size = 40;
+        char** tokens;
+        char data[20]{0};
+    
+
+            // prompt
+            strncpy(data,prompt,strlen(prompt));
+            print((uint8_t*)data);
+
+            // get line
+            line = get_line(line_size);
+
+            // parse line
+            tokens = parse_line(line);
+
+        /****************************************************************
+         * in strtok(), the first token (tokens[0]) points to the first
+         * char of the line being split. The subsequent tokens points to
+         * the other parts of the line. 
+         * So when we free(line) we lost the content of tokens.
+         * So we need free(line) when we no more need tokens.
+         * We use tokens[0] to free(line).
+        ******************************************************************/
+
+            return tokens;
+
+    }
+
+    //****************************************
+
+    char* Uart::get_line(int line_size)
+    {
+        uint8_t ch ='0';
+        int pos =0;
+        uint32_t len{0};
+        const uint32_t buf_size = 4;
+        uint8_t *data = (uint8_t *) malloc(buf_size);
+
+
+        char* line = (char*)malloc(sizeof(char)*line_size);
+    
+        if (line == NULL)
+        {
+            ESP_LOGE(_log_tag,"Error creating line in heap");
+            return NULL;
+        }
+
+        memset(line,0,sizeof(char)*line_size);
+
+        while(1)
+        {
+            len=0;
+            //ESP_LOGW(LOG_TAG,"waiting u0.read\n");
+            while(len==0){
+                len = read(data,buf_size,5);
+                vTaskDelay(1);
+            }
+            //ESP_LOGW(LOG_TAG,"getting u0.read (%d)\n",data[0]);
+            if (len <= 0) return NULL;
+            len = write(data,len);
+            ch = data[0];
+            if (ch == '\n'|| ch=='\r'){
+                //ESP_LOGW(LOG_TAG,"enter key pressed\n");
+                //line[pos++]='\n';
+                line[pos]=0;
+                return line;
+            }
+            line[pos++]=ch;
+        }
+    }
+
+    //****************************************
+
+    char** Uart::parse_line(char* line)
+    {
+        char** tokens = (char**)malloc(10*sizeof(char*));
+
+
+        char *token;
+        int pos = 0;
+
+        if(!tokens)
+        {
+            ESP_LOGE(_log_tag,"Error allocating tokens\n");
+            return NULL;
+        }
+
+        // get first param
+        token = strtok(line, " ");
+
+        // get next param
+        while (token != NULL) {
+            tokens[pos] = token;
+            pos++;
+
+            token = strtok(NULL, " ");
+        }
+        tokens[pos]=NULL;
+
+        return tokens;
+
+    }
+
+    //****************************************
+
+    void Uart::print (uint8_t* data)
+    {
+        int len{0};
+        len = write(data,strlen((char*)data)+1);
+    }
+
+
+
+
 } // namespace UART

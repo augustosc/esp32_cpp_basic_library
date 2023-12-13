@@ -20,6 +20,10 @@ There are two interfaces:
 
 - size_t available(void) - is uart data available to read
 
+- char** console(prompt) - get commands from console
+
+- void print(uint8_t* data) - print data to console
+
 ## Member Functions only event Uart
 - create_uart_event_task(name, priority,stackDepth) - create UART event task for the instance
 
@@ -44,6 +48,9 @@ U0.begin(115200,1,3);
 ## Example
 Download an example code from Uart/examples folder in github.
 
+Connect pins: 
+<br>RX2(16)-->TX1(22)
+<br>TX2(17)-->RX1(23)
 
 If you choose the option BUILDING WITH COMPONENTS FROM GITHUB in idf_component.yml file inside main, the component will be automatically downloaded from github to the manage_components local folder.
 

@@ -9,11 +9,12 @@ class FileStream
 {
 private:
     const char* _log_tag{"FileStream"};
+
 public:
     //***********************************************
     /// @param f_name file name
     /// @return file size
-    unsigned int get_file_size(const char* f_name);
+    unsigned int size(const char* f_name);
     
     
     //*********************************************** 
@@ -21,7 +22,7 @@ public:
     /// @param content data to be written
     /// @param f_size data size
     /// @return bytes written
-    unsigned int write_new_file(const char* f_name,
+    unsigned int write(const char* f_name,
                         const char* content,unsigned int f_size);
 
 
@@ -30,7 +31,7 @@ public:
     /// @param buf buffer to save read bytes
     /// @param size_buf buffer size
     /// @return bytes read
-    unsigned int read_file(const char* f_name, char* buf, unsigned int size_buf);
+    unsigned int read(const char* f_name, char* buf, unsigned int size_buf);
 
 
     ///*********************************************** 
@@ -48,10 +49,24 @@ public:
     /// @return ESP_OK on success
     esp_err_t readln(FILE* f,size_t max_line_size,char* line,int err);
 
-    esp_err_t look_up_file(const char* dirname,const char* filename, char* buf);
+    esp_err_t find(const char* dirname,const char* filename, char* buf);
     
-    void list_all_entries (const char* dirname);
+    void lstree (const char* dirname);
 
+    void ls (const char* dirname);
+
+    void println (const char* f_name, int n_lines);
+
+    void rmtree(const char* path);
+
+    void readnln(const char* f_name, int n_lines);
+
+    void copynln(const char* fw_name, const char* fr_name, const int n_lines);
+
+    void info( const char *filename);
+
+protected:
+    void mode_to_letters( int mode, char str[] );
 
 
 };

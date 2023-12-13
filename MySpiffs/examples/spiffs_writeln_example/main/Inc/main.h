@@ -18,8 +18,8 @@ public:
     esp_err_t setup(void);
     void loop(void);
 
-    void copy_by_line(const char* fw_name, const char* fr_name, const int n_lines);
-    void read_by_line(const char* f_name, const int n_lines);
+    // void copynln(const char* fw_name, const char* fr_name, const int n_lines);
+    //void read_by_line(const char* f_name, const int n_lines);
 
 
     SPIFFS::Spiffs spf;

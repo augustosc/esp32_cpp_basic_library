@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "main.h"
 
 
@@ -5,6 +8,7 @@
 
  #define TEST_1         ///< Uart 0 - read from monitor
 // #define TEST_2       ///< Uart 1/2 - echo
+
 
 static Main my_main;
 
@@ -124,6 +128,7 @@ esp_err_t Main::setup(void)
     }
 
 #endif
+
     
     return status;
 }
@@ -133,3 +138,4 @@ void Main::loop(void)
     
 
 }
+

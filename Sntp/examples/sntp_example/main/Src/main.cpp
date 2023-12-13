@@ -2,6 +2,8 @@
 
 
 #define LOG_TAG "MAIN"
+#define MY_SSID      CONFIG_ESP_WIFI_SSID
+#define MY_PASS      CONFIG_ESP_WIFI_PASSWORD
 
 static Main my_main;
 
@@ -34,7 +36,7 @@ esp_err_t Main::setup(void)
         {status = wifi.wifi_sta_connect();}
 
     if(ESP_OK == status)
-        {status = wifi.begin("Casa","pIMa7602944");}
+        {status = wifi.begin(MY_SSID,MY_PASS);}
     
 
     /********************************

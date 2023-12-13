@@ -13,7 +13,7 @@
 
 namespace MYFATFS
 {
-    esp_err_t Fatfs::mount(const char* base_path, const char* partition_label, esp_vfs_fat_mount_config_t* mount_config)
+    esp_err_t Fatfs::mount(const char* base_path, const char* partition_label, int MAX_FILES,esp_vfs_fat_mount_config_t* mount_config)
     {
         strncpy(_base_path, base_path, sizeof(_base_path));
 
@@ -21,7 +21,7 @@ namespace MYFATFS
         {
             _mount_config = {
                 .format_if_mount_failed = true,
-                .max_files = 10,
+                .max_files = MAX_FILES,
                 .allocation_unit_size = CONFIG_WL_SECTOR_SIZE,
                 .disk_status_check_enable = false,
             };

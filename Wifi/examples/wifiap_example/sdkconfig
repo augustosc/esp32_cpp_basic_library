@@ -340,6 +340,13 @@ CONFIG_PARTITION_TABLE_MD5=y
 # end of Partition Table
 
 #
+# Example Configuration
+#
+CONFIG_ESP_WIFI_SSID="Casa"
+CONFIG_ESP_WIFI_PASSWORD="pIMa7602944"
+# end of Example Configuration
+
+#
 # Compiler options
 #
 CONFIG_COMPILER_OPTIMIZATION_DEFAULT=y

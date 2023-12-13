@@ -26,6 +26,11 @@ namespace SPIFFS {
         };
         _conf=conf;
         status = esp_vfs_spiffs_register(&conf);
+
+        if (ESP_OK != status){
+            ESP_LOGE(_log_tag,"Error mounting %s spiffs: %s",p_label, esp_err_to_name(status));
+        }
+        
         return status;
     }
 

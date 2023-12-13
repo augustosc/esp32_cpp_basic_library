@@ -21,7 +21,7 @@ public:
     esp_err_t setup(void);
     void loop(void);
 
-    void read_by_line(const char* f_name, int n_lines);
+    //void readbyline(const char* f_name, int n_lines);
 
 
     SPIFFS::Spiffs spf;

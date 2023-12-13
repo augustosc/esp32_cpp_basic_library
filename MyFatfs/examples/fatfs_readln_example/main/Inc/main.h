@@ -21,8 +21,6 @@ public:
     esp_err_t setup(void);
     void loop(void);
 
-    void read_by_line(const char* base_path,const char* f_name, int n_lines);
-
 
     MYFATFS::Fatfs mydisk;
     
