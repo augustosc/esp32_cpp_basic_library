@@ -20,14 +20,14 @@ There are two interfaces:
 . blink(interval) - blink led on interval
 
 ## Button Member Functions
-. read_state() - button state
+. read_state(void) - button state
 
-. isChange() - is button state  changed?
+. isChange(void) - is button state  changed?
 
-. isRisingEdge() - is button 
+. isRisingEdge(void) - is button 
 rising edge?
 
-. isFallingEdge() - is button falling edge?
+. isFallingEdge(void) - is button falling edge?
 
 
 ## Using the component

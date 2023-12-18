@@ -16,9 +16,9 @@ This folder contains an ESP-IDF driver for Wigi written in C++.
 
 - netif_destroy(esp_netif_t* netif_object) - destroy netif object
 
-- esp_err_t wifi_deinit() - deinit wifi
+- wifi_deinit() - deinit wifi
 
-- state_e& get_state(void) - get wifi state
+- get_state(void) - get wifi state
 
 - get_mac(void) - get mac address string
 

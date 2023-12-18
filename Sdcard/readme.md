@@ -1,14 +1,14 @@
 # CPP Sdcard driver
-This folder contains an ESP-IDF driver for FatFS written in C++.
+This folder contains an ESP-IDF driver for SDcard written in C++.
 
 ## Member Functions from Sdcard
 - constructor Sdcard(PIN_CS, PIN_MOSI, PIN_CLK, PIN_MISO) - creates sdcard object
 
 - mount(BASE_PATH,MAX_FILES) - mount sdcard
 
-- unmount() - unmount sdcard
+- unmount(void) - unmount sdcard
 
-- print_info() - print sdcard info
+- print_info(void) - print sdcard info
 
 
 ## Member Functions inherited from FileStream
@@ -29,9 +29,9 @@ SDCARD::Sdcard sd {PIN_CS, PIN_MOSI, PIN_CLK, PIN_MISO};
 ``````
 - Use sdcard member functions in your code
 ```bash
-mydisk.look_up_file(BASE_PATH,lookup_file,buf);
-mydisk.readln(FILE* f, max_line_size,line,err);
-mydisk.write(f_name, content,f_size);
+sd.lookup(BASE_PATH,lookup_file,buf);
+sd.readln(FILE* f, max_line_size,line,err);
+sd.write(f_name, content,f_size);
 ```
 
 - Unmount sdcard in main.cpp inside main::setup

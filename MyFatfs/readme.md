@@ -4,7 +4,7 @@ This folder contains an ESP-IDF driver for FatFS written in C++.
 ## Member Functions from MyFatfs
 - mount(base_path, partition_label, MAX_FILES,mount_config = NULL) - mount fatfs
 
-- unmount() - unmount fatfs
+- unmount(void) - unmount fatfs
 
 ## Member Functions inherited from FileStream
 - see readme.md in FileStream
