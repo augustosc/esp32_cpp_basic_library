@@ -44,7 +44,7 @@ namespace SPIFFS
         //***********************************************  
         /// @brief unregister spiffs
         /// @return ESP_OK on success
-        esp_err_t unmount()
+        esp_err_t unmount(void)
         {
             return esp_vfs_spiffs_unregister(_conf.partition_label);
         }

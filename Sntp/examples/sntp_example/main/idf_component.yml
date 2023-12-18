@@ -1,30 +1,30 @@
 
 # LOCAL COMPONENT BUILDING
-dependencies:
-  Sntp:
-    override_path: '../../../'
-  Wifi:
-    override_path: '../../../../Wifi/'
+# dependencies:
+#   Sntp:
+#     override_path: '../../../'
+#   Wifi:
+#     override_path: '../../../../Wifi/'
 
 
 
 # BUILDING WITH COMPONENTS FROM GITHUB
-# dependencies:
-#   idf:
-#     version: '>=5.0'
-#   Sntp:
-#     git: https://github.com/augustosc/esp32_cpp_basic_library.git
-#     path: Sntp
+dependencies:
+  idf:
+    version: '>=5.0'
+  Sntp:
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
+    path: Sntp
   
-#   Wifi:
-#     git: https://github.com/augustosc/esp32_cpp_basic_library.git
-#     path: Wifi
+  Wifi:
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
+    path: Wifi
 
-# description: CPP Sntp driver
-# documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Sntp
-# maintainers:
-# - Augusto Sherman <augusto.sherman@gmail.com>
-# url: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Sntp
+description: CPP Sntp driver
+documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Sntp
+maintainers:
+- Augusto Sherman <augusto.sherman@gmail.com>
+url: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Sntp
 
 
 

@@ -2,23 +2,12 @@
 This folder contains an ESP-IDF driver for FatFS written in C++.
 
 ## Member Functions from MyFatfs
-- init(base_path, partition_label, mount_config) - init FatFs
+- mount(base_path, partition_label, MAX_FILES,mount_config = NULL) - mount fatfs
+
+- unmount() - unmount fatfs
 
 ## Member Functions inherited from FileStream
-- get_file_size(f_name) - get file size
-
-- write_new_file(f_name,content, f_size) - write new file
-
-- read_file(f_name, buf, size_buf) - read file
-
-- writeln(f, line) - writeline to a file
-
-- readln(f, max_line_size,line, err) - read a line from a file
-
-- list_all_entries (dirname) - list dir all entries
-
-- look_up_file(dirname, filename, buf) - lookup file in dir
-
+- see readme.md in FileStream
 
 
 ## Using the component
@@ -29,16 +18,16 @@ This folder contains an ESP-IDF driver for FatFS written in C++.
 MYFATFS::Fatfs mydisk;
 ``````
 
-- Init Fatfs in main.cpp inside main::setup
+- Mount Fatfs in main.cpp inside main::setup
 ```bash
- esp_err_t err = mydisk.init(BASE_PATH,PARTITION_LABEL,NULL);
+ status = mydisk.mount(BASE_PATH,PARTITION_LABEL,MAX_FILES);
 
 ``````
 - Use Fatfs member functions in your code
 ```bash
-mydisk.look_up_file(BASE_PATH,lookup_file,buf);
+mydisk.lookup(BASE_PATH,lookup_file,buf);
 mydisk.readln(FILE* f, max_line_size,cline,err);
-mydisk.write_new_file(f_name, content,f_size);
+mydisk.write(f_name, content,f_size);
 ```
 
 

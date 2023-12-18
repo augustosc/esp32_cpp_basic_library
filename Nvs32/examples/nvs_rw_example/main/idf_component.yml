@@ -1,25 +1,25 @@
 
 # LOCAL COMPONENT BUILDING
-dependencies:
-  Nvs32:
-    override_path: '../../../'
+# dependencies:
+#   Nvs32:
+#     override_path: '../../../'
 
 
 
 # BUILDING WITH COMPONENTS FROM GITHUB
-# dependencies:
-#   idf:
-#     version: '>=5.0'
-#   Nvs32:
-#     git: https://github.com/augustosc/esp32_cpp_basic_library.git
+dependencies:
+  idf:
+    version: '>=5.0'
+  Nvs32:
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
 
-#     path: Nvs32
+    path: Nvs32
 
-# description: CPP Nvs driver
-# documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Nvs32
-# maintainers:
-# - Augusto Sherman <augusto.sherman@gmail.com>
-# url: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Nvs32
+description: CPP Nvs driver
+documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Nvs32
+maintainers:
+- Augusto Sherman <augusto.sherman@gmail.com>
+url: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Nvs32
 
 
 

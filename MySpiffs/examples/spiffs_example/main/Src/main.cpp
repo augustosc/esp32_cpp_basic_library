@@ -8,12 +8,11 @@
 /************************************************
  *           CHOOSE A TEST:
 *************************************************/
-//#define TEST_1            ///< Running spiffs_check
+#define TEST_1            ///< Running spiffs_check
                             ///<Disable Watch CPU0 Idle Task in MENUCONFIG
-#define TEST_2            ///< Running wite & read spiffs file
-//#define TEST_3            ///< Try to read file longer than the buffer
-//#define TEST_4            ///< Try to read & print a 12k file in chunks
-//#define TEST_5            ///< Get Spiffs info (total & used)
+//#define TEST_2            ///< Running wite & read spiffs file
+//#define TEST_3            ///< Try to read & print a 12k file in chunks
+//#define TEST_4            ///< Get Spiffs info (total & used)
 
 
 static Main my_main;
@@ -47,7 +46,7 @@ esp_err_t Main::setup(void)
 
 #ifdef TEST_1
 /*************************************************
- *              TEST: Running spiffs_check:
+ *              TEST_1: Running spiffs_check:
  * Disable Watch CPU0 Idle Task in MENUCONFIG to
  * prevent WDT trigger.
  * 
@@ -63,11 +62,11 @@ esp_err_t Main::setup(void)
 
 #ifdef TEST_2
 /*************************************************
- *         TEST: Running wite & read spiffs file:
+ *         TEST_2: Running wite & read spiffs file:
 **************************************************/
 
     const char* f_name{"/spiffs/hello.txt"};
-    const char content[]={"Hello Sherman"};
+    const char content[]={"Hello World!"};
     const unsigned int content_size = sizeof(content);
     unsigned int got_f_size{};
     unsigned int total_written{};
@@ -78,34 +77,42 @@ esp_err_t Main::setup(void)
     ESP_LOGW(LOG_TAG,"content size = %u bytes",content_size);
 
     // write file
+
+    ///////////////////////////
     total_written = spf.write(f_name,content,content_size);
+    ///////////////////////////
+
     if (total_written != content_size)
     {
         ESP_LOGE(LOG_TAG,"Error writing file %s",f_name);
-        goto l_unmount;
+        return 0;
     }
 
     ESP_LOGW(LOG_TAG,"successful file %s written: %u bytes",f_name,total_written);
    
     // get file size
+    ///////////////////////////
     got_f_size = spf.size(f_name);
+    ///////////////////////////
+
     if (got_f_size != total_written)
     {
         ESP_LOGE(LOG_TAG,"Error getting file %s size",f_name);
-            goto l_unmount;
+            return 0;
     }
 
     ESP_LOGW(LOG_TAG,"successful got file %s size: %u bytes",f_name,got_f_size);
 
-    // create read buffer
-    data = (char*)malloc(got_f_size);
 
     // read file
-    total_read = spf.read(f_name,data,got_f_size);
+    ///////////////////////////
+    total_read = spf.read(f_name,&data);
+    ///////////////////////////
+
     if (total_read != got_f_size)
     {
         ESP_LOGE(LOG_TAG,"Error reading file %s",f_name);
-        goto l_unmount;
+        return 0;
     }
 
     // log read file
@@ -115,51 +122,31 @@ esp_err_t Main::setup(void)
     free(data);
     
 #endif
+
 #ifdef TEST_3
-/********************************************************
- *         TEST: Try to read file longer than the buffer
- *             Returns INSUFFICIENT BUFFER SIZE
-*********************************************************/
-    const char* f_name{"/spiffs/sub/data.txt"};
-
-    char buffer[256];
-    unsigned int f_size = spf.size(f_name);
-
-    ESP_LOGW(LOG_TAG,"file size = %u bytes X buffer size = %u",f_size,sizeof(buffer));
-
-    if (ESP_OK == status)
-        unsigned int ret = spf.read(f_name,buffer,sizeof(buffer));
-
-    goto l_unmount;
-#endif
-
-#ifdef TEST_4
 /*************************************************
  *      TEST: Try to read & print a 12k file in chunks
 **************************************************/
-    unsigned int ret{};
+    unsigned int len{};
+    char* buffer;
     const char* f_name{"/spiffs/sub/data1.txt"};
     
     unsigned int f_size = spf.size(f_name);
     
-    ESP_LOGW(LOG_TAG,"file size = %u bytes",f_size);
-
-    // buffer reserves space to \0 at the end
-    char* buffer = (char*)malloc(f_size+1);
+    ESP_LOGW(LOG_TAG,"file %s size = %u bytes",f_name,f_size);
 
     if (ESP_OK == status)
-        ret=spf.read(f_name,buffer,f_size+1);
+        len=spf.read(f_name,&buffer);
 
-    ESP_LOGI(LOG_TAG," data len = %u",ret);
-        //ESP_LOGI(LOG_TAG,"data = %s",buffer);
-        printf("data = %s",buffer);
+    ESP_LOGI(LOG_TAG," reading %s: %u bytes",f_name,len);
+    
+    printf("%s",buffer);
     
     free(buffer);
-    goto l_unmount;
 
 #endif
 
-#ifdef TEST_5
+#ifdef TEST_4
 /***********************************************
  *      TEST: Get Spiffs info (total & used)
 ************************************************/
@@ -169,8 +156,6 @@ esp_err_t Main::setup(void)
     ESP_LOGI(LOG_TAG,"USED = %u",info.used);
 
 #endif
-
-l_unmount:
     spf.unmount();
 
     ESP_LOGI(LOG_TAG, "Spiff Unmount!");

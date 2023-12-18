@@ -1,0 +1,5 @@
+int.... 4       unsigned int.... 4
+long.... 4      unsigned long... 4
+long long.... 8 unsigned long long... 8
+off_t.... 4
+size_t.... 4

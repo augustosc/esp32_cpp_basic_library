@@ -1,0 +1,12 @@
+# LOCAL COMPONENT BUILDING
+dependencies:
+  FileStream:
+    override_path: '../FileStream'
+
+# BUILDING WITH COMPONENTS FROM GITHUB
+# dependencies:
+#   idf:
+#     version: '>=5.0'
+#   FileStream:
+#     git: https://github.com/augustosc/esp32_cpp_basic_library.git
+#     path: FileStream

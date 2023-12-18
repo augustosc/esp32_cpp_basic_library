@@ -4,7 +4,7 @@
 #     override_path: '../../../'
 
 
-BUILDING WITH COMPONENTS FROM GITHUB
+# BUILDING WITH COMPONENTS FROM GITHUB
 dependencies:
   idf:
     version: '>=5.0'

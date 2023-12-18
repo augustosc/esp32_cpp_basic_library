@@ -11,20 +11,7 @@ This folder contains an ESP-IDF driver for Spiffs written in C++.
 - unmount(void) - unregister spiffs
 
 ## Member Functions inherited from FileStream
-- get_file_size(f_name) - get file size
-
-- write_new_file(f_name,content, f_size) - write new file
-
-- read_file(f_name, buf, size_buf) - read file
-
-- writeln(f, line) - writeline to a file
-
-- readln(f, max_line_size,line, err) - read a line from a file
-
-- list_all_entries (dirname) - list dir all entries
-
-- look_up_file(dirname, filename, buf) - lookup file in dir
-
+- see readme.md in FileStream library
 
 ## Using the component
 - Creating an instance in main.h inside class Main
@@ -34,19 +21,19 @@ SPIFFS::Spiffs spf;
 
 - Mount Spiffs in main.cpp inside main::setup
 ```bash
-esp_err_t status = spf.mount(PARTITION_TABLE,PATH,MAX_FILES,"true");
+status = spf.mount(PARTITION_TABLE,PATH,MAX_FILES,"true");
 
 ``````
 - Use Spiffs member functions in your code
 ```bash
-readln(FILE* f, max_line_size,cline,err);
+spf.printnln(fw_name, n_lines);
 
-write_new_file(f_name, content,f_size);
+spf.write(f_name, content,f_size);
 ```
 
 - So, unmount Spiffs in main.cpp
 ```bash
-esp_err_t status = spf.unmount();
+status = spf.unmount();
 ```
 
 ## Example
