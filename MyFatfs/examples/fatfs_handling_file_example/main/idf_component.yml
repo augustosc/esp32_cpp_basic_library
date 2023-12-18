@@ -9,16 +9,16 @@
 dependencies:
   idf:
     version: '>=5.0'
-  Gpio:
+  MyFatfs:
     git: https://github.com/augustosc/esp32_cpp_basic_library.git
 
-    path: MySpiffs
+    path: MyFatfs
 
-description: CPP Spiffs driver
-documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/MySpiffs
+description: CPP fatfs driver
+documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/MyFatfs
 maintainers:
 - Augusto Sherman <augusto.sherman@gmail.com>
-url: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/MySpiffs
+url: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/MyFatfs
 
 
 
