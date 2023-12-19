@@ -1,13 +1,49 @@
 dependencies:
+  # Nvs32:
+  #   override_path: '../../../'
+  # Smartcfg:
+  #   override_path: '../../../../Smartcfg'
+
+  # Credentials:
+  #   override_path: '../../../../Credentials'
+
+  # Wifi:
+  #   override_path: '../../../../Wifi'
+
+  # Sntp:
+  #   override_path: '../../../../Sntp'
+
+
+
+# BUILDING WITH COMPONENTS FROM GITHUB
+dependencies:
+  idf:
+    version: '>=5.0'
+  Nvs32:
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
+    path: Nvs32
+
   Smartcfg:
-    override_path: '../../../../Smartcfg'
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
+    path: Smartcfg
 
   Credentials:
-    override_path: '../../../../Credentials'
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
+    path: Credentials
 
   Wifi:
-    override_path: '../../../../Wifi'
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
+    path: Wifi
 
   Sntp:
-    override_path: '../../../../Sntp'
+    git: https://github.com/augustosc/esp32_cpp_basic_library.git
+    path: Sntp
+
+description: CPP Nvs driver
+documentation: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Nvs32
+maintainers:
+- Augusto Sherman <augusto.sherman@gmail.com>
+url: https://github.com/augustosc/esp32_cpp_basic_library/tree/main/Nvs32
+
+
 
