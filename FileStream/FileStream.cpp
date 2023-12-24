@@ -509,7 +509,7 @@ namespace FILESTREAM
         int i=1;
         while ((status = readln(f,MAX_LINE_SIZE,line,&err)) == ESP_OK)
         {
-            printf("[%d] %s\n",i++,line);
+            printf("[%d] %s",i++,line);
         }
         fclose(f);
         free(line);
