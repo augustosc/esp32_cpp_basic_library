@@ -290,7 +290,7 @@ esp_err_t Main::setup(void)
     ESP_LOGW(LOG_TAG,"delete \"%s\"",new_name);
 
     ////////////////////////////////////////
-    ret = mydisk.rmfile(new_name);
+    ret = mydisk.rm(new_name);
 
     if (ret == -1){
         ESP_LOGE(LOG_TAG,"Error deleting %s\n",new_name);

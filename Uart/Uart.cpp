@@ -114,7 +114,7 @@ namespace UART
     void Uart::uart_event_task()
     {
         ESP_LOGI(_log_tag,"running uart event task");
-        int len;
+        //int len;
         const int buffer_size{1024};
         uint8_t* buffer = (uint8_t*) malloc(buffer_size);
         
@@ -328,7 +328,7 @@ void Uart::taskfun(void* parm)
 
     void Uart::print (uint8_t* data)
     {
-        int len{0};
+        int len;
         len = write(data,strlen((char*)data)+1);
     }
 

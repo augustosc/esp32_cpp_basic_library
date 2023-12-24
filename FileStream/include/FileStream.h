@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <sys/dirent.h>
+#include "esp_vfs.h"
+#include "esp_vfs_fat.h"
 #include "esp_err.h"
 
 namespace FILESTREAM
@@ -66,12 +68,12 @@ public:
     //***********************************************
     /// @brief list all directory tree 
     /// @param dirname directory name
-    void lstree (const char* dirname);
+    int lstree (const char* dirname);
 
     //***********************************************
     /// @brief list directory 
     /// @param dirname directory name
-    void ls (const char* dirname);
+    int ls (const char* dirname);
 
 
      /// @brief print n lines from a file. Open file first.
@@ -108,7 +110,7 @@ public:
     //***********************************************
     /// @brief print file info 
     /// @param filename file name
-    void info( const char *filename);
+    int info( const char *filename);
 
 
     //***********************************************
@@ -123,20 +125,20 @@ public:
     /// @param new_name new name
     /// @param old_name old name
     /// @return returns 0 if success otherwise -1
-    int ren(const char* old_name, const char* new_name);
+    int ren(const char* new_name, const char* old_name);
 
     //***********************************************
     /// @brief remove file
     /// @param filename file name
     /// @return returns 0 if success otherwise -1
-    int rmfile(const char* filename);
+    int rm(const char* filename);
 
     //***********************************************
     /// @brief copy file
     /// @param fw_name destination file
     /// @param fr_name source file
     /// @return returns 0 if success otherwise -1
-    int cp(char* fw_name,char* fr_name);
+    int cp(const char* fw_name,const char* fr_name);
 
 
     //***********************************************
@@ -144,7 +146,16 @@ public:
     /// @param spath source path
     /// @param dpath destination path
     /// @param mod file permissions
-    void cptree(const char *spath, const char *dpath, mode_t mod = 0777);
+    int cptree(const char *dpath, const char *spath, mode_t mod = 0777);
+
+    /// @brief print all lines from a file. Open file first.
+    /// @param f_name file name
+    /// @return returns 0 on success otherwise -1
+    int cat(const char* fname);
+
+    int makdir(const char* dirname, mode_t mode =0777);
+
+    
 
 
 

@@ -23,6 +23,7 @@
 namespace UART {
     class Uart {
     private:
+        int _uart_num{};
         const char* _log_tag{"UART"};
         TaskHandle_t handle{NULL};
 
@@ -48,7 +49,6 @@ namespace UART {
         char** parse_line(char* line);
 
     public:
-        int _uart_num{};
         QueueHandle_t event_queue;
         SemaphoreHandle_t uart_data_received;
         uint8_t *buffer;
@@ -117,6 +117,14 @@ namespace UART {
         /// @brief print data to console
         /// @param data dta to be printed
         void print(uint8_t* data);
+
+
+        //***********************************************
+        /// @brief get uart_num
+        /// @return uart_num
+        int get_uart_num(){
+            return _uart_num;
+        }
 
     }; // class Uart
 

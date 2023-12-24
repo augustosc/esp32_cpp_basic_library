@@ -5,7 +5,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_event.h"
-
+#include "Sdcard.h"
 
 
 
@@ -16,6 +16,15 @@
 
 #define pdSECOND pdMS_TO_TICKS(1000)
 #define pdMINUTE pdMS_TO_TICKS(60*1000);
+
+#define PIN_CS 4
+#define PIN_MOSI 5
+#define PIN_CLK 18
+#define PIN_MISO 19
+
+constexpr uint32_t one_second{1000};
+constexpr uint32_t one_minute{60*1000};
+
 
 
 
@@ -44,5 +53,10 @@ public:
     /// use them inside Main::setup and/or Main::loop
 
     UART::Uart U0{0};
+
+    SDCARD::Sdcard sd {PIN_CS, PIN_MOSI, PIN_CLK, PIN_MISO};
+
+
+    
 
 };

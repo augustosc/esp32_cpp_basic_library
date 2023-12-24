@@ -291,7 +291,7 @@ namespace FILESTREAM
 
 //***********************************************
 
-    void FileStream::ls (const char* dirname)
+    int FileStream::ls (const char* dirname)
     {
         errno = 0;
         DIR* dir;
@@ -302,13 +302,14 @@ namespace FILESTREAM
         if(full_path == NULL)
         {
             ESP_LOGE(_log_tag, "Error allocating dir_name buffer");
-            return;
+            return -1;
         }
 
         if((dir = opendir(dirname)) == NULL)
         {
             ESP_LOGE(_log_tag, "Error openning dir \"%s\": \"%s\"",dirname,strerror(errno));
-            goto finish_1;
+            free(full_path);
+            return -1;
         }
 
         info(dirname);
@@ -322,25 +323,28 @@ namespace FILESTREAM
         if(entry == NULL && errno != 0)
         {
             ESP_LOGE(_log_tag, "Error reading \"%s\": \"%s\"",dirname,strerror(errno));
-            goto finish;
+            closedir(dir);
+            free(full_path);
+            return -1;
         }
-
-    finish:
 
         if (closedir(dir) == -1)
         {
             ESP_LOGE(_log_tag, "Error closing \"%s\": \"%s\"",dirname,strerror(errno));
+            free(full_path);
+            return -1;
         }
 
-    finish_1:
         free(full_path);
+
+        return 0;
 
     }
 
 
     //***********************************************
 
-    void FileStream::lstree (const char* dirname)
+    int FileStream::lstree (const char* dirname)
     {
         errno = 0;
         DIR* dir;
@@ -351,13 +355,15 @@ namespace FILESTREAM
         if(full_path == NULL)
         {
             ESP_LOGE(_log_tag, "Error allocating dir_name buffer");
-            return;
+            return -1;
         }
 
         if((dir = opendir(dirname)) == NULL)
         {
             ESP_LOGE(_log_tag, "Error openning dir \"%s\": \"%s\"",dirname,strerror(errno));
-            goto finish_1;
+            free(full_path);
+            return -1;
+            
         }
 
         info(dirname);
@@ -379,7 +385,9 @@ namespace FILESTREAM
         if(entry == NULL && errno != 0)
         {
             ESP_LOGE(_log_tag, "Error reading \"%s\": \"%s\"",dirname,strerror(errno));
-            goto finish;
+            closedir(dir);
+            free(full_path);
+            return -1;
         }
 
 
@@ -403,17 +411,21 @@ namespace FILESTREAM
         if(entry == NULL && errno != 0)
         {
             ESP_LOGE(_log_tag, "Error reading \"%s\": \"%s\"",dirname,strerror(errno));
+            closedir(dir);
+            free(full_path);
+            return -1;
         }
-
-    finish:
 
         if (closedir(dir) == -1)
         {
             ESP_LOGE(_log_tag, "Error closing \"%s\": \"%s\"",dirname,strerror(errno));
+            free(full_path);
+            return -1;
         }
 
-    finish_1:
         free(full_path);
+
+        return 0;
 
         }
 
@@ -428,11 +440,15 @@ namespace FILESTREAM
         int err =0;
         FILE* f = NULL;
 
+        // check number of lines to print
+        if (n_lines <=0)
+        {
+            ESP_LOGE(_log_tag,"number of lines must be > 0");
+            return -1;
+        }
+
         // create buffer to receive read line
         char* line = (char*)malloc(MAX_LINE_SIZE);
-
-        // open file
-        //ESP_LOGW(_log_tag,"Openning file %s",f_name);
 
         f = xopenfile(f_name,"r");
         if (f == NULL)
@@ -441,7 +457,6 @@ namespace FILESTREAM
             return -1;
         }
 
-        //ESP_LOGW(_log_tag,"Reading and printing %d lines of file %s",n_lines,f_name);
         // read lines
         for(int i=0;i<n_lines;i++)
         {
@@ -465,6 +480,46 @@ namespace FILESTREAM
         }
         free(line);
         return 0;
+    }
+
+
+    //**********************************************
+
+    int FileStream::cat(const char* f_name)
+    {
+        const size_t MAX_LINE_SIZE = 256;
+
+        esp_err_t status = ESP_OK;
+        errno=0;
+        int err =0;
+        FILE* f = NULL;
+
+        // create buffer to receive read line
+        char* line = (char*)malloc(MAX_LINE_SIZE);
+
+        f = xopenfile(f_name,"r");
+        if (f == NULL)
+        {
+            free(line);
+            return -1;
+        }
+
+        
+        // read all lines
+        int i=1;
+        while ((status = readln(f,MAX_LINE_SIZE,line,&err)) == ESP_OK)
+        {
+            printf("[%d] %s\n",i++,line);
+        }
+        fclose(f);
+        free(line);
+        if(err) {
+            ESP_LOGE(_log_tag,"Error reading line %d",i+1);
+            return -1;
+        }
+        return 0;
+
+        
     }
 
 
@@ -632,7 +687,7 @@ int FileStream::rmtree(const char *const path) {
 
     //***********************************************
     
-    void FileStream::info( const char *filename )
+    int FileStream::info( const char *filename )
     /*
     * display the info about 'filename'.  The info is stored in struct at *info_p
     */
@@ -644,7 +699,7 @@ int FileStream::rmtree(const char *const path) {
         if (ret == -1)
         {
             ESP_LOGE(_log_tag,"Error openning file %s: %s",filename,strerror(errno));
-            return;
+            return -1;
         }
 
         mode_to_letters( finfo.st_mode, modestr );
@@ -657,19 +712,23 @@ int FileStream::rmtree(const char *const path) {
         printf( "%.12s ", 4+ctime(&finfo.st_mtime));
         printf( "%s\n"  , filename );
 
+        return 0;
+
     }
 
     int FileStream::exists(const char* filename)
     {
         struct stat st;
         if(stat(filename, &st)==0){
+            printf("... file \"%s\" exists\n",filename);
             return 0;
         }
+        printf("... file \"%s\" does not exists\n",filename);
         return -1;
     }
 
 
-    int FileStream::ren(const char* old_name, const char* new_name)
+    int FileStream::ren(const char* new_name, const char* old_name)
     {
         errno=0;
 
@@ -683,12 +742,13 @@ int FileStream::rmtree(const char *const path) {
             ESP_LOGE(_log_tag,"Error renaming %s: %s",old_name,strerror(errno));
                 return -1;
         }
+        printf("... file renamed to \"%s\"\n",new_name);
         return 0;
 
     }
 
 
-    int FileStream::rmfile(const char* filename)
+    int FileStream::rm(const char* filename)
     {
         errno=0;
         if (exists(filename)!=0){
@@ -707,11 +767,12 @@ int FileStream::rmtree(const char *const path) {
     }
 
 
-void FileStream::cptree(const char *s_path, const char *d_path, mode_t mod)
+int FileStream::cptree(const char *d_path, const char *s_path, mode_t mod)
 {
         struct dir { DIR *d; char *path, *end; };
         const int MAX_FILE_SIZE = 256;
         const int MAX_PATH = 512;
+        int ret;
 
         struct dir src;
         struct dir dst;
@@ -720,17 +781,36 @@ void FileStream::cptree(const char *s_path, const char *d_path, mode_t mod)
 
 
         char* spath = (char*)malloc(MAX_PATH);
+        if (spath == NULL){
+            ESP_LOGE(_log_tag, " Error allocating spath");
+            return -1;
+        }
+
         char* dpath = (char*)malloc(MAX_PATH);
+        if (dpath == NULL){
+            ESP_LOGE(_log_tag, " Error allocating dpath");
+            free(spath);
+            return -1;
+        }
+
         strncpy(spath,s_path,MAX_PATH);
         strncpy(dpath,d_path,MAX_PATH);
 
         char* fspath = (char*)malloc(MAX_FILE_SIZE);
-        char* fdpath = (char*)malloc(MAX_FILE_SIZE);
         if(fspath==NULL){
-                printf("Error allocating fspath");
+                ESP_LOGE(_log_tag,"Error allocating fspath");
+                free(spath);
+                free(dpath);
+                return -1;
         }
+
+        char* fdpath = (char*)malloc(MAX_FILE_SIZE);
         if(fdpath==NULL){
-                printf("Error allocating fdpath");
+                ESP_LOGE(_log_tag,"Error allocating fdpath");
+                free(fspath);
+                free(spath);
+                free(dpath);
+                return -1;
         }
         
 
@@ -741,13 +821,35 @@ void FileStream::cptree(const char *s_path, const char *d_path, mode_t mod)
         printf("mkdir: %s\n",dpath);
 
         if( mkdir(dpath, mod) == -1 && errno != EEXIST ){
-                ESP_LOGE(_log_tag, "%s", dpath);
+                ESP_LOGE(_log_tag, "Error mkdir %s", dpath);
+                free(fspath);
+                free(fdpath);
+                free(spath);
+                free(dpath);
+                return -1;
         }
 
         src.d = xopendir(src.path = spath);
+        if(src.d == NULL){
+            ESP_LOGE(_log_tag, "Error openning dir %s", spath);
+            free(fspath);
+            free(fdpath);
+            free(spath);
+            free(dpath);
+            return -1;
+        }
 
 
         dst.d = xopendir(dst.path = dpath);
+        if(dst.d == NULL){
+            ESP_LOGE(_log_tag, "Error openning dir %s", dpath);
+            free(fspath);
+            free(fdpath);
+            free(spath);
+            free(dpath);
+            closedir(src.d);
+            return -1;
+        }
 
 
         //printf("readdir\n");
@@ -763,7 +865,16 @@ void FileStream::cptree(const char *s_path, const char *d_path, mode_t mod)
                         pathcat(spath, f->d_name); ///< change spath
                         pathcat(dpath, f->d_name); ///< change spath
                         xstat(spath, &b);
-                        cptree(spath, dpath, b.st_mode);
+                        ret = cptree(spath, dpath, b.st_mode);
+                        if (ret == -1){
+                            free(fspath);
+                            free(fdpath);
+                            free(spath);
+                            free(dpath);
+                            closedir(src.d);
+                            closedir(dst.d);
+                            return -1;
+                        }
                         *(src.end) = '\0'; ///< returns to original spath
                         *(dst.end) ='\0';
 
@@ -780,16 +891,20 @@ void FileStream::cptree(const char *s_path, const char *d_path, mode_t mod)
         //printf("end readdir loop\n");
         xclosedir(src.d, spath);
         xclosedir(dst.d, dpath);
+        free(spath);
+        free(dpath);
         free(fspath);
         free(fdpath);
 
+        return 0;
 } 
 
 
-    int FileStream::cp(char* fw_name,char* fr_name) 
+    int FileStream::cp(const char* fw_name,const char* fr_name) 
     { 
         FILE *fptr1, *fptr2; 
         int c; 
+        errno =0;
     
         // Open one file for reading 
         fptr1 = xopenfile(fr_name,"r");
@@ -808,9 +923,12 @@ void FileStream::cptree(const char *s_path, const char *d_path, mode_t mod)
         { 
             fputc(c, fptr2); 
             c = fgetc(fptr1); 
-        } 
-    
-        printf("%s copied\n", fr_name); 
+        }
+
+        if (!feof(fptr1)){
+            ESP_LOGE(_log_tag,"Error copying \"%s\"",fr_name);
+        }
+        else printf("... file \"%s\" copied to \"%s\"\n", fr_name,fw_name); 
     
         xclosefile(fptr1,fr_name); 
         xclosefile(fptr2,fw_name); 
@@ -819,6 +937,21 @@ void FileStream::cptree(const char *s_path, const char *d_path, mode_t mod)
 
 
 
+
+
+    int  FileStream::makdir(const char* dirname,mode_t mode)
+    {
+
+        if( mkdir(dirname, mode) == -1 && errno != EEXIST )
+        {
+                ESP_LOGE(_log_tag, "Error mkdir %s", dirname);
+                return -1;
+        }
+        return 0;
+
+    }
+
+    
 
 
 

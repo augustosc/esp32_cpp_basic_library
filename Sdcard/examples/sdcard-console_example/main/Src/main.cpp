@@ -4,12 +4,12 @@
 #include "main.h"
 
 
-#define _log_tag "MAIN"
+#define LOG_TAG "MAIN"
 
 static Main my_main;
 
 /************************************************
- *             Uart Console Example:
+ *             Sdcard Console Example:
  * We will use uart console to test file handling
  * functions in "fatfs" and "sdcard" libraries.
  ************************************************
@@ -23,10 +23,8 @@ static Main my_main;
 
 extern "C" void app_main(void)
 {
-    ESP_LOGI(_log_tag, "Creating default event loop");
+    ESP_LOGI(LOG_TAG, "Creating default event loop");
     ESP_ERROR_CHECK(esp_event_loop_create_default());
-
-
 
     ESP_ERROR_CHECK(my_main.setup());
 
@@ -41,37 +39,43 @@ esp_err_t Main::setup(void)
 {
     esp_err_t status {ESP_OK};
 
-    ESP_LOGI(_log_tag, "Setup!");
+    const char *BASE_PATH = "/store";
+    const int MAX_FILES = 10;
 
     vTaskDelay(500/portTICK_PERIOD_MS);
 
-    char* prompt{"\n>> "};
+    const char* prompt = "\n>> ";
     char** tokens;
+
+
+    //////////////////////////////
+    status = sd.mount(BASE_PATH,MAX_FILES);
+    if (ESP_OK != status){
+        ESP_LOGE(LOG_TAG, "Error mounting sdcard");
+        return 0;
+    }
+    //////////////////////////////
 
     if (ESP_OK == status)
     {U0.begin(115200,1,3);}
-
     if (ESP_OK == status)
     {U0.flush();}
 
     while(1){
-        // get cmd tokens
         tokens = U0.console(prompt);
-
-        // check NULL
+        
         if (tokens[0] == NULL) {
             continue;
         }
 
-        // terminate shell 
+
+        // terminate shell with "end" string
         if(strstr(tokens[0],"end") != NULL)
-        {
+        {   
             free(tokens);
             tokens=NULL;
             break;
         }
-
-        // run cmd 
         if (tokens[0]!=NULL)
         {
             run_cmd(tokens);
@@ -89,9 +93,20 @@ esp_err_t Main::setup(void)
         free(tokens[0]); ///< freeing line
         free(tokens);
         tokens=NULL;
+
     }
+
+    //////////////////////////////
+    status = sd.unmount();
+
+    if(ESP_OK != status)
+    {
+        ESP_LOGE(LOG_TAG, "Error unmounting sdcard");
+        return 0;
+    }
+    //////////////////////////////
     
-    return status;
+    return ESP_OK;
 }
 
 void Main::loop(void)
@@ -111,7 +126,7 @@ void Main::run_cmd(char** tokens)
 
     //********* ren
     if (!strcmp(tokens[0],"ren")){
-        if (tokens[3]!=NULL){
+        if (tokens[3]!= NULL){
             strncpy(data,"\ninvalid param!",sizeof(data));
             U0.print((uint8_t*)data);
             return;
