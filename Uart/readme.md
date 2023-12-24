@@ -54,7 +54,7 @@ Connect pins:
 
 If you choose the option BUILDING WITH COMPONENTS FROM GITHUB in idf_component.yml file inside main, the component will be automatically downloaded from github to the manage_components local folder.
 
-If you prefer dependencies locally, first download all MySpiffs component from github, so choose the # LOCAL COMPONENT BUILDING  in idf_component.yml file inside main. 
+If you prefer dependencies locally, first download all Uart component from github, so choose the # LOCAL COMPONENT BUILDING  in idf_component.yml file inside main. 
 
 So compile.
 

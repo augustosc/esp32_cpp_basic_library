@@ -69,7 +69,7 @@ Download an example code from Console/examples folder in github.
 
 If you choose the option BUILDING WITH COMPONENTS FROM GITHUB in idf_component.yml file inside main, the component will be automatically downloaded from github to the manage_components local folder.
 
-If you prefer dependencies locally download all MySpiffs component from github, choose the # LOCAL COMPONENT BUILDING  in idf_component.yml file inside main. 
+If you prefer dependencies locally download all Console component from github, choose the # LOCAL COMPONENT BUILDING  in idf_component.yml file inside main. 
 
 So compile.
 
