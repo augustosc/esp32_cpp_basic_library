@@ -43,18 +43,24 @@ namespace CONSOLE
             // get line
             line = get_line(line_size,old_line);
 
-            // save to old_line
-            strncpy(old_line,line,line_size);
-
             if (line == NULL){
+                continue;
+            }
+            if (strlen(line)==0){
                 free(line);
                 continue;
             }
 
+            // save to old_line
+            strncpy(old_line,line,line_size);
+
             // parse line
             tokens = parse_line(line);
 
-            if (tokens == NULL) continue;
+            if (tokens == NULL) {
+                continue;
+            }
+            
 
         /****************************************************************
          * in strtok(), the first token (tokens[0]) points to the first
@@ -65,10 +71,11 @@ namespace CONSOLE
          * We use tokens[0] to free(line).
         ******************************************************************/
             if (tokens[0] == NULL) {
+                free(tokens);
                 continue;
             }
 
-            // terminate shell with "end" string
+            // terminate shell with "exit" string
             if(strstr(tokens[0],"exit") != NULL)
             {   
                 ESP_LOGE(_log_tag,"Quiting console ...");
@@ -79,10 +86,16 @@ namespace CONSOLE
                 tokens=NULL;
                 break;
             }
+
             if (tokens[0]!=NULL)
             {
+                // run command
                 run(tokens);
             }
+
+            free(tokens[0]); // equivalent to free(line)
+            free(tokens);
+            tokens=NULL;
 
         }
             //return tokens;
@@ -126,6 +139,7 @@ namespace CONSOLE
 
             if (len <= 0) {
                 ESP_LOGE(_log_tag,"Error reading uart");
+                free(line);
                 return NULL;
             }
 

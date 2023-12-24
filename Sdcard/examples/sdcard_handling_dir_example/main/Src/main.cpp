@@ -75,7 +75,7 @@ esp_err_t Main::setup(void)
     ESP_LOGW(LOG_TAG,"STEP 4: copy directory tree from %s to %s",PATH,DST_PATH);
 
     ///////////////////////
-    sd.cptree(PATH,DST_PATH,0777);
+    sd.cptree(DST_PATH,PATH,0777);
     ///////////////////////
 
     vTaskDelay(100);        ///< wait printf conclude

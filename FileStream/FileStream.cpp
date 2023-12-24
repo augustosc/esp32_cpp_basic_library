@@ -865,7 +865,7 @@ int FileStream::cptree(const char *d_path, const char *s_path, mode_t mod)
                         pathcat(spath, f->d_name); ///< change spath
                         pathcat(dpath, f->d_name); ///< change spath
                         xstat(spath, &b);
-                        ret = cptree(spath, dpath, b.st_mode);
+                        ret = cptree(dpath, spath, b.st_mode);
                         if (ret == -1){
                             free(fspath);
                             free(fdpath);
@@ -928,7 +928,7 @@ int FileStream::cptree(const char *d_path, const char *s_path, mode_t mod)
         if (!feof(fptr1)){
             ESP_LOGE(_log_tag,"Error copying \"%s\"",fr_name);
         }
-        else printf("... file \"%s\" copied to \"%s\"\n", fr_name,fw_name); 
+        else printf("file \"%s\" copied to \"%s\"\n", fr_name,fw_name); 
     
         xclosefile(fptr1,fr_name); 
         xclosefile(fptr2,fw_name); 
