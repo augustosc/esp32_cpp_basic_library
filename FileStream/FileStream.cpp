@@ -490,7 +490,7 @@ namespace FILESTREAM
         const size_t MAX_LINE_SIZE = 256;
 
         esp_err_t status = ESP_OK;
-        errno=0;
+        //errno=0;
         int err =0;
         FILE* f = NULL;
 

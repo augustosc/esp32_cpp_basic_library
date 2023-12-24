@@ -36,17 +36,6 @@ namespace UART {
         /// @brief static wrap function to xTaskCreate
         static void taskfun(void* parm);
 
-        //***********************************************
-        /// @brief get line from console
-        /// @param line_size line size
-        /// @return the line read from console
-        char* get_line(int line_size);
-
-        //***********************************************
-        /// @brief parse line read from console
-        /// @param line line to be parsed 
-        /// @return line tokens 
-        char** parse_line(char* line);
 
     public:
         QueueHandle_t event_queue;
@@ -107,11 +96,6 @@ namespace UART {
         /// @return ESP_OK on success
         esp_err_t create_uart_event_task(const char* name, UBaseType_t priority,uint32_t stackDepth=configMINIMAL_STACK_SIZE);
 
-        //***********************************************
-        /// @brief get commands from console
-        /// @param prompt the console prompt
-        /// @return cmd and parameters to be run
-        char** console(char* prompt);
 
         //***********************************************
         /// @brief print data to console

@@ -1,7 +1,7 @@
 # LOCAL COMPONENT BUILDING
 # dependencies:
-  # Uart:
-  #   override_path: '../../../'
+#   Uart:
+#     override_path: '../../../'
 
 
 # BUILDING WITH COMPONENTS FROM GITHUB
